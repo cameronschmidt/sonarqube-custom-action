@@ -1,0 +1,26 @@
+name: 'sonarscanner'
+description: 'uses sonarscanner in a sonarqube docker image to scan static code for non-java applciations and upload to sonarqube'
+inputs:
+  github-token:
+    description: 'github secret auth token'
+    required: true
+  sonar-token:
+    description: 'sonarqube secret auth token'
+    required: true
+  sonar-host-url:
+    description: 'the sonarqube host url'
+    required: true
+
+runs:
+  using: "composite"
+  steps: 
+    - run: |
+        docker run \
+          --rm \
+          --workdir="/github/workspace" \
+          -e GITHUB_TOKEN="${{ inputs.github-token }}" \
+          -e SONAR_TOKEN="${{ inputs.sonar-token }}" \
+          -e SONAR_HOST_URL="${{ inputs.sonar-host-url }}" \
+          -v "${{ github.workspace }}:/github/workspace" \
+          sonarsource/sonar-scanner-cli
+      shell: bash
