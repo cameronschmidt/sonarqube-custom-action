@@ -18,8 +18,9 @@ runs:
         docker run \
           --rm \
           --workdir="/github/workspace" \
+          -e GITHUB_TOKEN="${{ inputs.github-token }}" \
           -e SONAR_TOKEN="${{ inputs.sonar-token }}" \
           -e SONAR_HOST_URL="${{ inputs.sonar-host-url }}" \
           -v "${{ github.workspace }}:/github/workspace" \
-          sonarsource/sonar-scanner-cli
+          sonarsource/sonar-scanner-cli:latest
       shell: bash
